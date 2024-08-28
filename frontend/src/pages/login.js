@@ -94,7 +94,7 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/api/account/adminlogin', {
+      const response = await axios.post('/api/account/login', {
         username,
         password,
       });

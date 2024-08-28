@@ -51,6 +51,7 @@ export default function DefaultLayout({ title, children }: DefaultLayoutProps) {
           <h1 className="text-center">Resume Screening App</h1>
         </div>
       </header>
+      <Header />
       <main className="container my-5">
         {children}
       </main>
