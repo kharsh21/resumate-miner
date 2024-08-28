@@ -31,7 +31,7 @@
 // export default DefaultLayout;
 import Head from 'next/head';
 
-export default function DefaultLayout({ title, children }) {
+export default function DefaultLayout({ title, children }: DefaultLayoutProps) {
   return (
     <>
       <Head>
