@@ -29,6 +29,9 @@
 // };
 
 // export default DefaultLayout;
+import React, { ReactNode } from "react";
+import Footer from "@/components/modules/Footer";
+import Header from "@/components/modules/Header";
 import Head from 'next/head';
 
 interface DefaultLayoutProps {
