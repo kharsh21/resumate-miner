@@ -31,6 +31,11 @@
 // export default DefaultLayout;
 import Head from 'next/head';
 
+interface DefaultLayoutProps {
+  title: string;
+  children: ReactNode;
+}
+
 export default function DefaultLayout({ title, children }: DefaultLayoutProps) {
   return (
     <>
