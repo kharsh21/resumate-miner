@@ -1,0 +1,73 @@
+/* tailwind.css */
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure layout stretches to at least viewport height */
+}
+
+.flex-grow {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Set footer to be sticky at the bottom */
+footer {
+  margin-top: auto; /* Push footer to the bottom */
+}
+
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Global body styling */
+body {
+  background-color: #f4f4f4;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+}
+
+/* Link styles */
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Custom utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+
+
