@@ -2,8 +2,13 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="en" data-theme="dark">
         <Head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){try{var t=localStorage.getItem('resumate-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
+            }}
+          />
           <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
             rel="stylesheet"

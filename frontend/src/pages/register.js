@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import DefaultLayout from "@/components/layouts/DefaultLayout";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import DefaultLayout from "@/components/layouts/DefaultLayout";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -9,112 +10,198 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [error, setError] = useState(null);
-
-  const handlePasswordMatch = () => {
-    if (password !== cpassword) {
-      setError("Passwords do not match");
-      return false;
-    }
-    return true;
-  };
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!handlePasswordMatch()) {
+    setError(null);
+    if (password !== cpassword) {
+      setError("Passwords do not match");
       return;
     }
+    setLoading(true);
     try {
-      const response = await axios.post("/api/account/register", {
+      await axios.post("/api/account/register", {
         username,
         email,
         password,
         cpassword,
       });
       window.location.href = "/login";
-    } catch (error) {
-      setError(error.response.data.error);
+    } catch (err) {
+      setError(
+        err?.response?.data?.error || "Registration failed. Please try again."
+      );
+      setLoading(false);
     }
   };
 
   return (
-    <DefaultLayout title="Register" content="">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6 col-lg-5">
-            <form className="bg-light p-5 mb-5" onSubmit={handleSubmit}>
-              <h1 className="h3 mb-3 fw-normal text-center">
-                Create an Account
-              </h1>
-              <div className="form-floating mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="username"
-                  placeholder="Username"
-                  value={username}
-                  required
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-                <label htmlFor="username">Username*</label>
-              </div>
-              <div className="form-floating mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  placeholder="Email"
-                  value={email}
-                  required
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-                <label htmlFor="email">Email*</label>
-              </div>
-              <div className="form-floating mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Password"
-                  value={password}
-                  minLength="8"
-                  required
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-                <label htmlFor="password">Password*</label>
-              </div>
-              <div className="form-floating mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  id="cpassword"
-                  placeholder="Confirm Password"
-                  value={cpassword}
-                  minLength="8"
-                  required
-                  onChange={(event) => setCPassword(event.target.value)}
-                />
-                <label htmlFor="cpassword">Confirm Password*</label>
-              </div>
-              {error && (
-                <div className="alert alert-danger" role="alert">
-                  {error}
-                </div>
-              )}
-              <div className="d-grid gap-2">
-                <button className="btn btn-primary btn-lg mt-5" type="submit">
-                  Register
-                </button>
-              </div>
-              <p className="text-center mt-3">
-                Already have an account?{" "}
-                <Link href="/login" className="text-decoration-none">
-                  Log In
-                </Link>
-              </p>
-            </form>
+    <DefaultLayout title="Register | ResuMate" content="">
+      <div className="auth">
+        <motion.div
+          className="auth__card rm-glass"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="auth__head">
+            <span className="rm-chip">Get started</span>
+            <h1 className="auth__title">
+              Create your <span className="rm-gradient-text">ResuMate</span> account
+            </h1>
+            <p className="rm-muted">Start screening smarter in minutes.</p>
           </div>
-        </div>
+
+          <form onSubmit={handleSubmit} className="auth__form">
+            <label className="auth__label">
+              Username
+              <input
+                type="text"
+                className="rm-input"
+                placeholder="Choose a username"
+                value={username}
+                required
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </label>
+
+            <label className="auth__label">
+              Email
+              <input
+                type="email"
+                className="rm-input"
+                placeholder="you@example.com"
+                value={email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+
+            <div className="auth__row">
+              <label className="auth__label">
+                Password
+                <input
+                  type="password"
+                  className="rm-input"
+                  placeholder="••••••••"
+                  value={password}
+                  minLength={8}
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </label>
+
+              <label className="auth__label">
+                Confirm
+                <input
+                  type="password"
+                  className="rm-input"
+                  placeholder="••••••••"
+                  value={cpassword}
+                  minLength={8}
+                  required
+                  onChange={(e) => setCPassword(e.target.value)}
+                />
+              </label>
+            </div>
+
+            {error && <div className="auth__error">{error}</div>}
+
+            <button
+              className="rm-btn rm-btn-primary auth__submit"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Creating account…" : "Create Account →"}
+            </button>
+          </form>
+
+          <p className="auth__foot rm-muted">
+            Already have an account?{" "}
+            <Link href="/login" className="auth__link">
+              Sign in
+            </Link>
+          </p>
+        </motion.div>
       </div>
+
+      <style jsx>{`
+        .auth {
+          min-height: 70vh;
+          display: grid;
+          place-items: center;
+          padding: 32px 0;
+        }
+        .auth__card {
+          width: 100%;
+          max-width: 520px;
+          padding: 40px;
+        }
+        .auth__head {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 28px;
+        }
+        .auth__title {
+          font-family: var(--font-display);
+          font-size: 1.6rem;
+          font-weight: 700;
+        }
+        .auth__form {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+        }
+        .auth__row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+        .auth__label {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+        .auth__error {
+          padding: 12px 14px;
+          border-radius: var(--radius-sm);
+          background: rgba(244, 63, 94, 0.12);
+          border: 1px solid rgba(244, 63, 94, 0.4);
+          color: #fb7185;
+          font-size: 0.9rem;
+        }
+        .auth__submit {
+          margin-top: 6px;
+          width: 100%;
+        }
+        .auth__submit:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+        .auth__foot {
+          text-align: center;
+          margin-top: 22px;
+          font-size: 0.95rem;
+        }
+        .auth__link {
+          color: var(--primary);
+          font-weight: 600;
+        }
+        .auth__link:hover {
+          text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+          .auth__row {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
     </DefaultLayout>
   );
 }
