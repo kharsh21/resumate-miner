@@ -1,65 +1,56 @@
-// import React, { ReactNode } from "react";
-// import Footer from "@/components/modules/Footer";
-// import Header from "@/components/modules/Header";
-// import Head from "next/head";
-
-// interface DefaultLayoutProps {
-//   children: ReactNode;
-//   title: string;
-//   content: string;
-// }
-
-// const DefaultLayout: React.FC<DefaultLayoutProps> = ({ title, content, children }) => {
-//   return (
-//     <>
-//       <Head>
-//         <title>{title}</title>
-//         <meta name="description" content={content} />
-//       </Head>
-//       <Header />
-//       <div className="container mt-5">{children}</div>
-//       <Footer />
-//     </>
-//   );
-// };
-
-// DefaultLayout.defaultProps = {
-//   title: "Superforecaster",
-//   content: "",
-// };
-
-// export default DefaultLayout;
 import React, { ReactNode } from "react";
-import Header from "@/components/modules/Header";
-import Head from 'next/head';
+import Head from "next/head";
+import Navbar from "@/components/modules/Navbar";
+import Footer from "@/components/modules/Footer";
 
 interface DefaultLayoutProps {
   title: string;
+  content?: string;
   children: ReactNode;
+  /** Render children edge-to-edge (e.g. the 3D landing page) instead of inside a centered container. */
+  fullBleed?: boolean;
 }
 
-export default function DefaultLayout({ title, children }: DefaultLayoutProps) {
+export default function DefaultLayout({
+  title,
+  content,
+  children,
+  fullBleed = false,
+}: DefaultLayoutProps) {
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta name="description" content="A sleek and modern resume screening application" />
+        <meta
+          name="description"
+          content={content || "A sleek and modern resume screening application"}
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className="bg-primary text-white py-4">
-        <div className="container">
-          <h1 className="text-center">Resume Screening App</h1>
-        </div>
-      </header>
-      <Header />
-      <main className="container my-5">
-        {children}
-      </main>
-      <footer className="bg-dark text-white py-4 mt-5">
-        <div className="container text-center">
-          &copy; 2024 Resume Screening App. All rights reserved.
-        </div>
-      </footer>
+
+      <div className="layout">
+        <Navbar />
+        <main className={fullBleed ? "layout__main" : "layout__main container"}>
+          {children}
+        </main>
+        <Footer />
+      </div>
+
+      <style jsx>{`
+        .layout {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+        .layout__main {
+          flex: 1;
+          width: 100%;
+        }
+        .layout__main.container {
+          padding-top: 40px;
+          padding-bottom: 64px;
+        }
+      `}</style>
     </>
   );
 }

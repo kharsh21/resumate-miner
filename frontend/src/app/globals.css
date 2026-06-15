@@ -1,73 +1,217 @@
-/* tailwind.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
 
+/* ===== Design tokens ===== */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --maxw: 1200px;
+
+  --primary: #6d5efc;
+  --primary-600: #5a4ce0;
+  --accent: #22d3ee;
+  --accent-2: #f472b6;
+
+  --shadow-sm: 0 2px 8px rgba(16, 18, 38, 0.08);
+  --shadow-md: 0 12px 40px rgba(16, 18, 38, 0.12);
+  --transition: 240ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* Light theme */
+[data-theme="light"] {
+  --bg: #f5f6fb;
+  --bg-grad-1: #e9ecff;
+  --bg-grad-2: #f7eefc;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-solid: #ffffff;
+  --border: rgba(20, 24, 60, 0.10);
+  --text: #14163a;
+  --text-muted: #5b6079;
+  --glass-blur: blur(14px);
+  --nav-bg: rgba(255, 255, 255, 0.7);
+  --hero-glow: rgba(109, 94, 252, 0.25);
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure layout stretches to at least viewport height */
+/* Dark futuristic theme */
+[data-theme="dark"] {
+  --bg: #070912;
+  --bg-grad-1: #0c1024;
+  --bg-grad-2: #120a23;
+  --surface: rgba(20, 24, 48, 0.55);
+  --surface-solid: #11142a;
+  --border: rgba(125, 140, 255, 0.16);
+  --text: #eaecff;
+  --text-muted: #9aa0c7;
+  --glass-blur: blur(16px);
+  --nav-bg: rgba(10, 12, 28, 0.55);
+  --hero-glow: rgba(34, 211, 238, 0.22);
 }
 
-.flex-grow {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Set footer to be sticky at the bottom */
-footer {
-  margin-top: auto; /* Push footer to the bottom */
-}
-
-/* Reset some default styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Global body styling */
-body {
-  background-color: #f4f4f4;
-  color: #333;
-  font-family: 'Roboto', sans-serif;
-  line-height: 1.6;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Link styles */
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--text);
+  line-height: 1.6;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, var(--hero-glow), transparent 60%),
+    radial-gradient(900px 500px at 0% 10%, var(--bg-grad-2), transparent 55%),
+    linear-gradient(160deg, var(--bg-grad-1), var(--bg));
+  background-attachment: fixed;
+  transition: background var(--transition), color var(--transition);
+}
+
 a {
-  color: #3498db;
+  color: inherit;
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
-/* Custom utility classes */
+/* override legacy bootstrap container width clash kept narrow for app pages */
 .container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: var(--maxw);
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 24px;
 }
 
 .text-center {
   text-align: center;
 }
 
+/* ===== Reusable modern UI ===== */
+.rm-glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
 
+.rm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition),
+    background var(--transition), border-color var(--transition);
+}
 
+.rm-btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow: 0 10px 30px rgba(109, 94, 252, 0.35);
+}
+.rm-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(109, 94, 252, 0.5);
+}
 
+.rm-btn-ghost {
+  color: var(--text);
+  background: transparent;
+  border-color: var(--border);
+}
+.rm-btn-ghost:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  background: var(--surface);
+}
 
+.rm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--glass-blur);
+}
+
+.rm-gradient-text {
+  background: linear-gradient(120deg, var(--primary), var(--accent) 60%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rm-section {
+  padding: 88px 0;
+}
+
+.rm-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.rm-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.rm-muted {
+  color: var(--text-muted);
+}
+
+/* scrollbar polish */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+/* Make legacy bootstrap form inputs match the theme on revamped pages */
+.rm-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-solid);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+.rm-input::placeholder {
+  color: var(--text-muted);
+}
+.rm-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(109, 94, 252, 0.18);
+}
+
+@media (max-width: 640px) {
+  .rm-section {
+    padding: 56px 0;
+  }
+}
